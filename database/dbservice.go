@@ -174,7 +174,6 @@ func GetUserByEmail(c context.Context, email string) (page models.PersonalPage, 
 	err = row.Scan(&page.Id, &page.Email, &page.FirstName, &page.LastName)
 
 	if err != nil {
-		log.Fatal(err)
 		return page, err
 	}
 
@@ -188,7 +187,6 @@ func GetPasswordByEmail(c context.Context, email string) (page models.PersonalPa
 	err = row.Scan(&page.Id, &page.Password, &page.Email)
 
 	if err != nil {
-		log.Fatal(err)
 		return page, err
 	}
 
@@ -240,7 +238,6 @@ func FetchPersonalPage(c context.Context, id string) (page models.PersonalPage, 
 	err = row.Scan(&page.Email, &page.FirstName, &page.LastName, &page.Age, &page.Sex, &page.Address)
 
 	if err != nil {
-		log.Fatal(err)
 		return page, err
 	}
 

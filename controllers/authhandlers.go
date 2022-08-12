@@ -22,14 +22,14 @@ func Signin() gin.HandlerFunc {
 
 		result, err := database.GetPasswordByEmail(c.Request.Context(), data.Email)
 
-		if result.Email == "" {
-			c.JSON(http.StatusNotFound, gin.H{"message": "User account was not found"})
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "Problem logging into your account"})
 			c.Abort()
 			return
 		}
 
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": "Problem logging into your account"})
+		if result.Email == "" {
+			c.JSON(http.StatusNotFound, gin.H{"message": "User account was not found"})
 			c.Abort()
 			return
 		}
