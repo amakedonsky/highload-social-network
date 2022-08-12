@@ -21,8 +21,14 @@ func Init() {
 		log.Fatal(err)
 	}
 
-	createPersonalPageTable(SocialNetworkDB)
-	createFriendshipTable(SocialNetworkDB)
+	err = createPersonalPageTable(SocialNetworkDB)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = createFriendshipTable(SocialNetworkDB)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func dbConnection() error {
@@ -30,7 +36,7 @@ func dbConnection() error {
 		User:   "root",
 		Passwd: "root",
 		Net:    "tcp",
-		Addr:   "127.0.0.1:3306",
+		Addr:   "db:3306",
 		DBName: "highload_social_network",
 	}
 
@@ -264,7 +270,9 @@ func GetAllFriends(c context.Context, personId string) ([]models.PersonalPage, e
 		return []models.PersonalPage{}, err
 	}
 
-	defer rows.Close()
+	defer func(rows *sql.Rows) {
+		_ = rows.Close()
+	}(rows)
 
 	var pages []models.PersonalPage
 	for rows.Next() {
